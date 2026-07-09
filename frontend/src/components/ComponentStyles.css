@@ -1,0 +1,486 @@
+/* ComponentStyles.css — Shared component styles */
+
+/* ======= SECTION WRAPPER ======= */
+.comp-section {
+  padding: 32px 0;
+}
+
+/* ======= VISUAL SEARCH ======= */
+.vs-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.vs-upload {
+  max-width: 480px;
+}
+
+.vs-dropzone {
+  border: 2px dashed rgba(108, 77, 255, 0.3);
+  border-radius: var(--radius-xl);
+  background: white;
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-dropzone:hover,
+.vs-dropzone--dragging {
+  border-color: var(--primary);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 4px rgba(108, 77, 255, 0.1);
+}
+
+.vs-dropzone--has-preview {
+  padding: 0;
+  border-style: solid;
+  border-color: var(--primary);
+}
+
+.vs-dropzone__preview {
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
+  border-radius: calc(var(--radius-xl) - 2px);
+  background: #f5f3ff;
+}
+
+.vs-dropzone__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(108, 77, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.95rem;
+  opacity: 0;
+  transition: var(--transition);
+  border-radius: calc(var(--radius-xl) - 2px);
+}
+
+.vs-dropzone:hover .vs-dropzone__overlay {
+  opacity: 1;
+}
+
+.vs-dropzone__icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.vs-dropzone__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.vs-dropzone__sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.vs-dropzone__formats {
+  display: inline-block;
+  padding: 4px 14px;
+  background: var(--accent-soft);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.vs-results {
+  width: 100%;
+}
+
+.vs-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+}
+
+/* ======= PRODUCT LIST FILTERS ======= */
+.pl-filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.pl-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pl-filter-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pl-select {
+  padding: 10px 36px 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+  background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236C4DFF'/%3E%3C/svg%3E") no-repeat right 12px center;
+  appearance: none;
+  cursor: pointer;
+  transition: var(--transition);
+  outline: none;
+}
+
+.pl-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108, 77, 255, 0.1);
+}
+
+/* ======= PAGINATION ======= */
+.pl-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.pl-page-btn {
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--border);
+  background: white;
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.pl-page-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--accent-soft);
+}
+
+.pl-page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pl-page-numbers {
+  display: flex;
+  gap: 6px;
+}
+
+.pl-page-num {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border);
+  background: white;
+  color: var(--text-muted);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pl-page-num:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.pl-page-num--active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-light));
+  border-color: var(--primary);
+  color: white;
+  box-shadow: 0 4px 12px rgba(108, 77, 255, 0.4);
+}
+
+/* ======= EMPTY STATE ======= */
+.comp-empty {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 2px dashed var(--border);
+}
+
+.comp-empty__icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.comp-empty h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.comp-empty p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* ======= RESPONSIVE ======= */
+@media (max-width: 768px) {
+  .vs-upload {
+    max-width: 100%;
+  }
+
+  .pl-filters {
+    width: 100%;
+  }
+
+  .pl-pagination {
+    gap: 6px;
+  }
+
+  .pl-page-numbers {
+    display: none;
+  }
+}
+
+/* ======= VISUAL SEARCH INSPIRATION PANEL (STYLE IT YOUR WAY) ======= */
+.vs-split-container {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.vs-left-col {
+  width: 440px;
+  flex: 0 0 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.vs-left-col .vs-upload {
+  width: 100%;
+  max-width: 100%;
+}
+
+.vs-right-col {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Style It Your Way Card Container */
+.vs-inspiration-panel {
+  background: #FFFFFF;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: 0 10px 30px rgba(108, 77, 255, 0.06);
+  border: 1px solid #EAE4FF;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.vs-inspiration-header {
+  margin-bottom: 24px;
+}
+
+.vs-inspiration-title-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #111827;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.vs-inspiration-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  color: #6B7280;
+}
+
+/* 4 Inspiration Cards Grid */
+.vs-inspiration-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+/* Individual Inspiration Card */
+.vs-inspiration-card {
+  background: #FFFFFF;
+  border-radius: 22px;
+  padding: 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  border: 1px solid #F2EFFD;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.vs-inspiration-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(108, 77, 255, 0.12);
+}
+
+.vs-inspiration-img-wrap {
+  width: 100%;
+  height: 170px;
+  border-radius: 14px;
+  background: #F8F8FF;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vs-inspiration-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.vs-card-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-top: 14px;
+  margin-bottom: 4px;
+}
+
+.vs-card-desc {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  color: #6B7280;
+  line-height: 1.45;
+}
+
+/* Responsive Breakpoints for Style It Your Way */
+@media (max-width: 1280px) {
+  .vs-split-container {
+    gap: 24px;
+  }
+
+  .vs-left-col {
+    width: 380px;
+    flex: 0 0 380px;
+  }
+
+  /* Laptop: 2 x 2 Grid */
+  .vs-inspiration-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .vs-split-container {
+    flex-direction: column;
+  }
+
+  .vs-left-col {
+    width: 100%;
+    flex: none;
+  }
+
+  .vs-right-col {
+    width: 100%;
+  }
+
+  /* Tablet: 2 Cards Per Row */
+  .vs-inspiration-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .vs-inspiration-panel {
+    padding: 20px;
+  }
+
+  /* Mobile: 1 Card Per Row */
+  .vs-inspiration-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================= SECTION 2: FULL-WIDTH SIMILAR PRODUCTS GRID ================= */
+.vs-results--fullwidth {
+  width: 100%;
+  margin-top: 36px;
+  box-sizing: border-box;
+}
+
+.vs-empty--fullwidth {
+  width: 100%;
+  margin-top: 36px;
+  box-sizing: border-box;
+}
+
+.products-grid--fullwidth {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+@media (min-width: 1600px) {
+  .products-grid--fullwidth {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1599px) {
+  .products-grid--fullwidth {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .products-grid--fullwidth {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .products-grid--fullwidth {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 421px) and (max-width: 640px) {
+  .products-grid--fullwidth {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 420px) {
+  .products-grid--fullwidth {
+    grid-template-columns: 1fr;
+  }
+}
