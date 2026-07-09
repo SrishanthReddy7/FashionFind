@@ -16,8 +16,9 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     try {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://fashionfind-backend.onrender.com';
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/signin`,
+        `${API_URL}/api/auth/signin`,
         { email, password }
       );
       setToken(res.data.token);

@@ -22,14 +22,15 @@ const SignupPage = () => {
     }
     setLoading(true);
     try {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://fashionfind-backend.onrender.com';
       // Signup with name, email, and password
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        `${API_URL}/api/auth/signup`,
         { name, email, password }
       );
       // Auto-login after signup
       const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/signin`,
+        `${API_URL}/api/auth/signin`,
         { email, password }
       );
       setToken(res.data.token);
