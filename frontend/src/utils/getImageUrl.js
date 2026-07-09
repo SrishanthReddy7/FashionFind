@@ -3,6 +3,6 @@ export const getImageUrl = (image) => {
   if (image.startsWith('http://') || image.startsWith('https://')) {
     return image;
   }
-  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+  const baseUrl = import.meta.env.VITE_API_URL || 'https://fashionfind-backend.onrender.com';
   return `${baseUrl}/${image.replace(/^\//, '')}`;
 };
