@@ -175,15 +175,6 @@ FashionAI/
 └── README.md                                  # Project documentation
 ```
 
-## UI Interface
-
-The frontend is built using React and Vite. The UI interface is divided into several components:
-
-- **Login-Page**:
-![Drag Racing](UI-Images/SignIn.jpg)
-
-- **Home-Page**:
-![Drag Racing](UI-Images/Home.jpg)
 
 ## Troubleshooting
 - **Backend Fails to Start**:
