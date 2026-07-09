@@ -23,7 +23,7 @@ function parseFeatures(row) {
     try {
       let clean = String(row.feature_list).replace(/^\[|\]$/g, '');
       return clean.split(/', '\s*|", "\s*/).map(s => s.replace(/^['"]|['"]$/g, '').replace(/\\xa0/g, ' ').trim()).filter(Boolean);
-    } catch (e) {}
+    } catch (e) { }
   }
   if (row.meta_info) {
     return String(row.meta_info).split('.').map(s => s.trim()).filter(Boolean);
@@ -59,14 +59,15 @@ async function processCSV(filePath, options = {}) {
   }
 
   // Connect to MongoDB
-  console.log('Connecting to MongoDB...');
+  console.log("Connecting to MongoDB...");
+
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/fashion_db');
-  } catch (cloudErr) {
-    console.warn(`Cloud MongoDB connection failed (${cloudErr.message}). Falling back to local MongoDB...`);
-    await mongoose.connect('mongodb://localhost:27017/fashion_db');
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB connected to ${mongoose.connection.name}`);
+  } catch (err) {
+    console.error("MongoDB connection failed:", err);
+    process.exit(1);
   }
-  console.log('MongoDB connected');
 
   // Initialize Pinecone
   console.log('Initializing Pinecone client...');

@@ -175,7 +175,6 @@ FashionAI/
 └── README.md                                  # Project documentation
 ```
 
-
 ## Troubleshooting
 - **Backend Fails to Start**:
   - Ensure MongoDB is running (`mongod`).

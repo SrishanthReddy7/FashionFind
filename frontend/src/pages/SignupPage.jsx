@@ -22,10 +22,10 @@ const SignupPage = () => {
     }
     setLoading(true);
     try {
-      // Signup (name is stored if backend supports it, email+password are required)
+      // Signup with name, email, and password
       await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/signup`,
-        { email, password }
+        { name, email, password }
       );
       // Auto-login after signup
       const res = await axios.post(

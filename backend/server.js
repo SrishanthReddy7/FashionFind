@@ -2,6 +2,13 @@
  * server.js
  */
 require('dotenv').config();
+
+// Ensure reliable DNS resolution for MongoDB Atlas SRV records across all network providers
+const dns = require('dns');
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (error) {}
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -14,7 +21,13 @@ const searchRoutes = require('./routes/search');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://fashionfind-frontend-chi.vercel.app"
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -23,10 +36,7 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // MongoDB connection (for user data only)
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/fashion_db';
-mongoose.connect(mongoUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => {
+mongoose.connect(mongoUri).then(() => {
   console.log(`MongoDB connected to ${mongoose.connection.name}`);
 }).catch(err => {
   console.error('MongoDB connection error:', err);
