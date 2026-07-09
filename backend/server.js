@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // MongoDB connection (for user data only)
-const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/fashion_db';
+const mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/fashion_db';
 mongoose.connect(mongoUri).then(() => {
   console.log(`MongoDB connected to ${mongoose.connection.name}`);
 }).catch(err => {
