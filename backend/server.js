@@ -22,10 +22,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://fashionfind-frontend-chi.vercel.app"
-  ],
+  origin: true, // Allows all origins dynamically (localhost, Vercel preview URLs, and production domains)
   credentials: true,
 }));
 app.use(express.json());
