@@ -11,6 +11,7 @@ async function initPinecone() {
 
   const indexName = process.env.PINECONE_INDEX || 'fashionai';
   const expectedDimension = 768; // For Google's text-embedding-004
+  const expectedMetric = 'cosine'; // Cosine is best for text/image semantic embeddings
 
   try {
     // Fetch existing indexes
@@ -39,7 +40,8 @@ async function initPinecone() {
     const existingIndex = indexes.find(index => index.name === indexName);
     if (existingIndex) {
       const indexDescription = await pinecone.describeIndex(indexName);
-      if (indexDescription.dimension !== expectedDimension) {
+      if (indexDescription.dimension !== expectedDimension || indexDescription.metric !== expectedMetric) {
+        console.log(`Index metric: ${indexDescription.metric}, expected: ${expectedMetric}`);
         console.log(`Deleting index ${indexName} with dimension ${indexDescription.dimension}...`);
         await pinecone.deleteIndex(indexName);
         console.log(`Waiting for deletion of ${indexName}...`);
@@ -54,7 +56,7 @@ async function initPinecone() {
         await pinecone.createIndex({
           name: indexName,
           dimension: expectedDimension,
-          metric: 'euclidean',
+          metric: 'cosine',
           spec: {
             serverless: {
               cloud: 'aws',
