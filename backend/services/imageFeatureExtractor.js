@@ -38,7 +38,7 @@ async function extractFeatures(imageBuffer, text = '') {
   let visionSucceeded = false;
 
   try {
-    const visionModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const visionModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
     const imageBase64 = imageBuffer.toString('base64');
     const prompt = `You are a fashion expert. Analyze this clothing image and describe it precisely in one paragraph. Include:
 1. Exact garment type (e.g. skinny jeans, wide-leg trousers, straight-leg pants, flare jeans, cropped jeans, denim skirt)
