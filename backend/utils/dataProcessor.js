@@ -2,6 +2,13 @@
  * utils/dataProcessor.js
  */
 require('dotenv').config();
+
+// Ensure reliable DNS resolution for MongoDB Atlas SRV records across all network providers
+const dns = require('dns');
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+} catch (error) {}
+
 const csv = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
@@ -163,12 +170,31 @@ async function processCSV(filePath, options = {}) {
       if (processedIds.has(strId)) {
         continue;
       }
-      // Skip if already indexed in Pinecone
+      processedIds.add(strId);
+
+      // Parse product data and collect for MongoDB upsert
+      const price = parsePrice(row.selling_price);
+      const discount = parsePrice(row.discount);
+      const featuresList = parseFeatures(row);
+
+      products.push({
+        product_id: strId,
+        name: productName,
+        price: price,
+        discount: discount,
+        category_id: parseInt(row.category_id, 10) || 0,
+        brand: row.brand || 'Unknown',
+        launch_on: parseDate(row.launch_on),
+        image: row.feature_image_s3 || '',
+        description: row.description || '',
+        features: featuresList
+      });
+
+      // Skip Pinecone embedding if already indexed
       if (skipIndexed && existingIds.has(strId)) {
         skippedCount++;
         continue;
       }
-      processedIds.add(strId);
 
       // Check if image file exists locally
       let imageBuffer = null;
@@ -181,11 +207,6 @@ async function processCSV(filePath, options = {}) {
           imageBuffer = fs.readFileSync(altPath);
         }
       }
-
-      // Parse price
-      const price = parsePrice(row.selling_price);
-      const discount = parsePrice(row.discount);
-      const featuresList = parseFeatures(row);
 
       // Build rich semantic text for embedding
       const metaInfo = String(row.meta_info || '').trim();
@@ -241,19 +262,6 @@ async function processCSV(filePath, options = {}) {
         console.log(`Upserted batch of ${vectorBatch.length} vectors (Total: ${upsertedCount})`);
         vectorBatch = [];
       }
-
-      products.push({
-        product_id: strId,
-        name: productName,
-        price: price,
-        discount: discount,
-        category_id: parseInt(row.category_id, 10) || 0,
-        brand: row.brand || 'Unknown',
-        launch_on: parseDate(row.launch_on),
-        image: row.feature_image_s3 || '',
-        description: row.description || '',
-        features: featuresList
-      });
     } catch (err) {
       console.error(`Error processing row ${rowCount} (${row.product_id || row.sku}): ${err.message}`);
       skippedCount++;
@@ -276,13 +284,25 @@ async function processCSV(filePath, options = {}) {
     vectorBatch = [];
   }
 
-  // Insert into MongoDB
+  // Upsert into MongoDB without deleting existing products
   try {
-    console.log(`Inserting ${products.length} unique products into MongoDB...`);
+    console.log(`Upserting ${products.length} unique products into MongoDB...`);
     if (products.length > 0) {
-      await Product.deleteMany({});
-      const result = await Product.insertMany(products, { ordered: false });
-      console.log(`Inserted ${result.length} products into MongoDB`);
+      let mongoUpserted = 0;
+      const MONGO_BATCH_SIZE = 1000;
+      for (let i = 0; i < products.length; i += MONGO_BATCH_SIZE) {
+        const batch = products.slice(i, i + MONGO_BATCH_SIZE);
+        const operations = batch.map(p => ({
+          updateOne: {
+            filter: { product_id: p.product_id },
+            update: { $set: p },
+            upsert: true
+          }
+        }));
+        await Product.bulkWrite(operations, { ordered: false });
+        mongoUpserted += batch.length;
+      }
+      console.log(`Upserted/Updated ${mongoUpserted} products in MongoDB`);
     }
 
     console.log(`\n--- Summary ---`);

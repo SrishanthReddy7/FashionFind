@@ -1,5 +1,8 @@
 # Fashion Visual Search & Intelligent Styling Assistant
 
+## 🌐 Live Demo
+- **Live URL**: https://fashionfind-frontend-chi.vercel.app/
+
 ## Overview
 The **Fashion Visual Search & Intelligent Styling Assistant** is a web application designed to help users browse, search, and discover fashion products. It leverages visual search technology powered by Pinecone for image-based product matching, provides personalized recommendations using Google Generative AI, and includes features like product browsing, trending items, and user authentication. The project is built with a React frontend, an Express.js backend, and MongoDB for user data storage.
 

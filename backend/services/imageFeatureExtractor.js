@@ -23,10 +23,10 @@ async function generateEmbedding(text, apiKey) {
 
 async function extractFeatures(imageBuffer, text = '') {
   const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  const descriptionText = text || 'Fashion item';
 
   // If no image buffer (text-only indexing path), skip vision model
   if (!imageBuffer || !Buffer.isBuffer(imageBuffer)) {
-    const descriptionText = text || 'Fashion clothing item';
     console.log(`Generating text-only embedding: ${descriptionText.slice(0, 80)}...`);
     return generateEmbedding(descriptionText, apiKey);
   }
@@ -34,11 +34,9 @@ async function extractFeatures(imageBuffer, text = '') {
   // Image uploaded by user - use vision model to describe the item precisely
   console.log('Analyzing uploaded image with vision model...');
   const genAI = new GoogleGenerativeAI(apiKey);
-  let enhancedDescription = text || '';
-  let visionSucceeded = false;
-
+  let enhancedDescription = descriptionText;
   try {
-    const visionModel = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const visionModel = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const imageBase64 = imageBuffer.toString('base64');
     const prompt = `You are a fashion expert. Analyze this clothing image and describe it precisely in one paragraph. Include:
 1. Exact garment type (e.g. skinny jeans, wide-leg trousers, straight-leg pants, flare jeans, cropped jeans, denim skirt)
@@ -53,22 +51,15 @@ Be very specific. Do NOT be generic. Output as a single descriptive paragraph.`;
       { inlineData: { mimeType: 'image/jpeg', data: imageBase64 } }
     ]);
     const visionText = visionResult?.response?.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (visionText && visionText.trim().length > 20) {
+    if (visionText) {
       enhancedDescription = visionText.trim();
-      visionSucceeded = true;
       console.log(`Vision description: ${enhancedDescription.slice(0, 150)}...`);
     }
   } catch (visionErr) {
     console.warn(`Vision model failed, falling back to text: ${visionErr.message}`);
   }
 
-  // If vision failed and no text provided, use a meaningful fallback
-  if (!visionSucceeded && !enhancedDescription) {
-    enhancedDescription = 'Fashion clothing item jeans pants trousers apparel';
-  }
-
   return generateEmbedding(enhancedDescription, apiKey);
 }
-
 
 module.exports = { extractFeatures };
