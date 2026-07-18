@@ -31,7 +31,7 @@ async function initPinecone() {
         try {
           const desc = await pinecone.describeIndex(indexName);
           if (desc.status?.ready) break;
-        } catch (e) {}
+        } catch (e) { }
         await new Promise(r => setTimeout(r, 2000));
       }
     };
